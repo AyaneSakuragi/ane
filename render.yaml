@@ -1,0 +1,21 @@
+databases:
+  - name: web-web-site_DB
+    databaseName: web_web_site_db
+    user: web-web-site
+    region: singapore
+
+services:
+  - type: web
+    name: web-web-site
+    env: ruby
+    region: singapore
+    plan: free
+    buildCommand: "./bin/render-build.sh"
+    startCommand: "bundle exec puma -C config/puma.rb"
+    envVars:
+      - key: DATABASE_URL
+        fromDatabase:
+          name: web-web-site_DB
+          property: connectionString
+      - key: RAILS_MASTER_KEY
+        sync: false
